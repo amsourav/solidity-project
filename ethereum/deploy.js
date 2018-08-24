@@ -1,9 +1,10 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const compiledFactory = require('./build/CampaignFactory.json');
+const rinkebyToken = 'foster around protect expand remain roof night month puzzle choice brain roof'
 
 const provider = new HDWalletProvider(
-  'call glow acoustic vintage front ring trade assist shuffle mimic volume reject',
+  rinkebyToken,
   'https://rinkeby.infura.io/v3/65e937e10ddd40cd8aaea30ce1fc806c'
 );
 const web3 = new Web3(provider);
@@ -21,7 +22,7 @@ const deploy = async () => {
     JSON.parse(compiledFactory.interface)
   )
     .deploy({ data: compiledFactory.bytecode })
-    .send({ gas: '1000000', from: accounts[0] });
+    .send({ gas: '6721975', from: accounts[0] });
 
   console.log('Contract deployed to', result.options.address);
 };

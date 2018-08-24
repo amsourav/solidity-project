@@ -25,7 +25,7 @@ export default class CampaignCard extends PureComponent {
       campaignImage,
       campaignTitle,
       campaignSubject,
-      campaignURL
+      contractAddress
     } = this.props;
     return (
       <Col md="3" sm="12">
@@ -35,7 +35,7 @@ export default class CampaignCard extends PureComponent {
             <CardBody>
               <CardTitle>{campaignTitle}</CardTitle>
               <CardText>{campaignSubject}</CardText>
-              <Button href={campaignURL}>Button</Button>
+              <Button href={`/campaigns/${contractAddress}`}>Donate Now</Button>
             </CardBody>
           </Card>
         </div>
