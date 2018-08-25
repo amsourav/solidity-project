@@ -42,12 +42,14 @@ to
           {approvalCount}
         </div>
 
-        <div>
-          Approval:
-          {(approvalCount / (totalUser * 1.0)) * 100}
-          {' '}
+        {!complete && (
+          <div>
+            Approval:
+            {(approvalCount / (totalUser * 1.0)) * 100}
+            {' '}
 %
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="pt-2">

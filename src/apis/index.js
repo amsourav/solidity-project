@@ -187,6 +187,11 @@ export const getAllVerifiedUsers = async () => {
           identityDocument: request.identityDocument,
           publicBlockchainAddress: request.publicBlockchainAddress,
         };
+      })
+      .map(async (user) => {
+        const r = await user;
+        return { 
+          [r.publicBlockchainAddress]: r };
       }),
   );
 };
@@ -195,19 +200,15 @@ export const approveRequest = async (campaignAddress, requestId) => {
   const account = await getAccount();
   const campaign = CampaignContract(campaignAddress);
   // console.log(campaign)
-  return campaign.methods
-    .approveRequest(requestId)
-    .send({
-      from: account,
-    });
+  return campaign.methods.approveRequest(requestId).send({
+    from: account,
+  });
 };
 
 export const completeRequest = async (campaignAddress, requestId) => {
   const account = await getAccount();
   const campaign = CampaignContract(campaignAddress);
-  return campaign.methods
-    .finalizeRequest(requestId)
-    .send({
-      from: account,
-    });
+  return campaign.methods.finalizeRequest(requestId).send({
+    from: account,
+  });
 };
