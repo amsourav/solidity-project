@@ -25,6 +25,6 @@ export const getCampaignSummary = async address => {
     campaignTitle: summary[1],
     campaignSubject: summary[2],
     campaignImage: summary[3],
-    campaignMinimum: parseInt(summary[4])
+    campaignMinimum: parseInt(summary[4], 10)
   };
 };
