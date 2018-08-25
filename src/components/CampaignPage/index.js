@@ -20,6 +20,7 @@ import {
   getPendingRequestCount,
   getRequests,
   createRequest,
+  memberCount,
 } from '../../apis';
 import './CampaignPage.css';
 
@@ -32,7 +33,7 @@ class CampaignPage extends Component {
       isRequestOpen: false,
       isMember: false,
       isContributeStart: false,
-      pendingRequestCount: 0,
+      mCount: 0,
     };
   }
 
@@ -44,15 +45,18 @@ class CampaignPage extends Component {
     } = this.props;
     const isMember = await userIsMember(campaignId);
     const campaign = await getCampaignSummary(campaignId);
-    console.log('campaign ==>', campaign)
+    const mCount = await memberCount(campaignId);
+    // const users = await getAllVerifiedUsers();
+    // console.log('users ==>', users);
+    // console.log('campaign ==>', campaign);
     const pendingRequestCount = await getPendingRequestCount(campaignId);
     const requests = await getRequests(campaignId, pendingRequestCount);
-    console.log(requests);
+    // console.log(requests);
     await this.setState({
       campaign,
       isMember,
-      pendingRequestCount,
       requests,
+      mCount,
     });
   }
 
@@ -113,9 +117,9 @@ class CampaignPage extends Component {
       isMember,
       isOpen,
       isContributeStart,
-      pendingRequestCount,
       requests,
       isRequestOpen,
+      mCount,
     } = this.state;
     return campaign ? (
       <Fragment>
@@ -237,9 +241,9 @@ class CampaignPage extends Component {
                     {' '}
                     <CardBody>
                       <CardTitle style={{ textAlign: 'center' }}>
-                        <h1>{pendingRequestCount}</h1>
+                        <h1>{mCount}</h1>
                         <br />
-                        <div>Pending</div>
+                        <div>Members</div>
                       </CardTitle>
                     </CardBody>
                   </Card>
@@ -270,7 +274,11 @@ class CampaignPage extends Component {
                     </div>
                     <Container>
                       {requests.map(request => (
-                        <RequestCard {...request} />
+                        <RequestCard
+                          {...request}
+                          handleCompletion={() => {}}
+                          handleApproval={() => {}}
+                        />
                       ))}
                     </Container>
                   </div>

@@ -1,6 +1,7 @@
 import factory from '../../ethereum/factory';
 import CampaignContract from '../../ethereum/campaign';
 import web3 from '../../ethereum/web3';
+import identity from '../../ethereum/indentity';
 
 export const getDeployedContracts = async () => factory.methods.getDeployedCampaigns().call();
 
@@ -165,4 +166,31 @@ export const createRequest = async (contractAddress, requestParams) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export const memberCount = async (contractAddress) => {
+  const campaign = CampaignContract(contractAddress);
+  return campaign.methods.approversCount().call();
+};
+
+export const getUsersCount = async () => identity.methods.getUsersCount().call();
+
+export const getAllVerifiedUsers = async () => {
+  const usersCount = await getUsersCount();
+
+  return Promise.all(
+    Array(parseInt(usersCount, 10))
+      .fill()
+      .map((element, index) => identity.methods.users(index).call())
+      .map(async (r) => {
+        const request = await r;
+        // console.log('identity  ==>', request);
+        return {
+          username: request.username,
+          socialProfile: request.socialProfile,
+          identityDocument: request.identityDocument,
+          publicBlockchainAddress: request.publicBlockchainAddress,
+        };
+      }),
+  );
 };
