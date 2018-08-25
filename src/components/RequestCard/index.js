@@ -17,7 +17,7 @@ const RequestCard = ({
         Requesting to send
         {' '}
         <code>
-          {value / 1000.0}
+          {value}
           {' '}
 ETH
         </code>

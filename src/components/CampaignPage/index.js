@@ -44,6 +44,7 @@ class CampaignPage extends Component {
     } = this.props;
     const isMember = await userIsMember(campaignId);
     const campaign = await getCampaignSummary(campaignId);
+    console.log('campaign ==>', campaign)
     const pendingRequestCount = await getPendingRequestCount(campaignId);
     const requests = await getRequests(campaignId, pendingRequestCount);
     console.log(requests);
@@ -134,7 +135,7 @@ class CampaignPage extends Component {
             style={{
               width: '100%',
               height: 300,
-              filter: 'blur(2px)',
+              filter: 'blur(2px) grayscale(50%)',
             }}
             alt="coverimage"
             src="https://picsum.photos/1024/300"
@@ -195,7 +196,9 @@ class CampaignPage extends Component {
                     </h4>
                     <div className="contribution">
                       {'Min contribution: '}
-                      {campaign.campaignMinimum} {' ETH'}
+                      {campaign.campaignMinimum}
+                      {' '}
+                      {' ETH'}
                     </div>
                   </div>
                 </div>
@@ -217,19 +220,19 @@ class CampaignPage extends Component {
           <Container style={{ paddingTop: '80px' }}>
             {isMember ? (
               <Row>
-                <Col md={2}>
+                <Col md={3}>
                   <Card>
                     {' '}
                     <CardBody>
                       <CardTitle style={{ textAlign: 'center' }}>
-                        <h1>{campaign.campaignBalance / 1000}</h1>
+                        <h1>{campaign.campaignBalance}</h1>
                         <br />
-                        <div>' ETH' Balance</div>
+                        <div>ETH Balance</div>
                       </CardTitle>
                     </CardBody>
                   </Card>
                 </Col>
-                <Col md={2}>
+                <Col md={3}>
                   <Card>
                     {' '}
                     <CardBody>
@@ -237,18 +240,6 @@ class CampaignPage extends Component {
                         <h1>{pendingRequestCount}</h1>
                         <br />
                         <div>Pending</div>
-                      </CardTitle>
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col md={2}>
-                  <Card>
-                    {' '}
-                    <CardBody>
-                      <CardTitle style={{ textAlign: 'center' }}>
-                        <h1>{0}</h1>
-                        <br />
-                        <div>Approved</div>
                       </CardTitle>
                     </CardBody>
                   </Card>

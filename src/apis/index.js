@@ -17,7 +17,7 @@ export const getCampaignSummary = async (address) => {
   const campaign = CampaignContract(address);
   const summary = await campaign.methods.getSummary().call();
 
-  console.log(summary);
+  console.log('campaign raw ==>', summary);
 
   return {
     contractAddress: address,
@@ -134,7 +134,7 @@ export const getRequests = async (contractAddress, requestCount) => {
       .map((element, index) => campaign.methods.requests(index).call())
       .map(async (r) => {
         const request = await r;
-        console.log(request);
+        console.log('hello ==>', request);
         return {
           approvalCount: request.approvalCount,
           complete: request.complete,

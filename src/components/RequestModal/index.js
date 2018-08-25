@@ -50,7 +50,7 @@ export default class RequestModal extends PureComponent {
               <Input onChange={this.handleChange} name="recipient" id="recipient" type="string" />
             </FormGroup>
             <FormGroup>
-              <Label for="value">Value</Label>
+              <Label for="value">Value (ETH)</Label>
               <Input onChange={this.handleChange} name="value" id="value" min="0" type="number" />
             </FormGroup>
           </Form>

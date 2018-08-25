@@ -117,7 +117,7 @@ contract Campaign {
     function getSummary() public view returns (
         address, string, string, string, uint, uint
     ) {
-        return (manager, campaignName, campaignSubject, campaignURL, minimumContribution, this.balance);
+        return (manager, campaignName, campaignSubject, campaignURL, minimumContribution, address(this).balance);
     }
 
     function getRequestsCount() public view returns (uint) {
