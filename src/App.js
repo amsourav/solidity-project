@@ -3,19 +3,18 @@ import React, { Fragment } from 'react';
 import Route from 'react-router-dom/Route';
 import Switch from 'react-router-dom/Switch';
 import {
-  Container,
-  Collapse,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavItem,
-  NavLink,
+  Container, Collapse, Nav, Navbar, NavbarBrand, NavItem, NavLink,
 } from 'reactstrap';
+import { init } from '@sentry/browser';
 import Home from './components/Home';
 import Campaign from './components/Campaign';
 import About from './components/About';
 import CampaignPage from './components/CampaignPage';
 import NewCampaign from './components/NewCampaign';
+
+init({
+  dsn: 'https://ad2ca50a40d84b938d42965a7bd7316a@sentry.io/1268752',
+});
 
 const App = () => (
   <Fragment>

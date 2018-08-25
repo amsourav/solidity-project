@@ -11,7 +11,9 @@ class CampaignPage extends Component {
 
   async componentDidMount() {
     const {
-      match: { params: campaignId },
+      match: {
+        params: { campaignId },
+      },
     } = this.props;
     const summary = await getCampaignSummary(campaignId);
     this.setState(

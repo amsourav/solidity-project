@@ -26,9 +26,9 @@ class NewCampaign extends Component {
 
   handleChange = async (event) => {
     const {
-      name,
-      target: { value },
+      target: { name, value },
     } = event;
+
     await this.setState({
       [name]: value,
     });

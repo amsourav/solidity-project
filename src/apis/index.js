@@ -4,7 +4,8 @@ import web3 from '../../ethereum/web3';
 
 export const getDeployedContracts = async () => factory.methods.getDeployedCampaigns().call();
 
-export const getCampaignSummary = async (address) => {
+export const getCampaignSummary = async address => {
+  console.log(address)
   const campaign = CampaignContract(address);
   const summary = await campaign.methods.getSummary().call();
 

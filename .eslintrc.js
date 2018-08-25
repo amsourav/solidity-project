@@ -12,4 +12,7 @@ module.exports = {
     classes: true,
     spread: true,
   },
+  globals: {
+    window: true
+  }
 };

@@ -1,8 +1,8 @@
-import App from './App';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import App from './App';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -15,7 +15,7 @@ server
     const markup = renderToString(
       <StaticRouter context={context} location={req.url}>
         <App />
-      </StaticRouter>
+      </StaticRouter>,
     );
 
     if (context.url) {
@@ -27,23 +27,21 @@ server
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charset="utf-8" />
-        <title>GoFundMe</title>
+        <title>ETHCollective</title>
+        <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js"
+    crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
         ${
-          assets.client.css
-            ? `<link rel="stylesheet" href="${assets.client.css}">`
-            : ''
-        }
-        ${
-          process.env.NODE_ENV === 'production'
-            ? `<script src="${assets.client.js}" defer></script>`
-            : `<script src="${assets.client.js}" defer crossorigin></script>`
-        }
+  process.env.NODE_ENV === 'production'
+    ? `<script src="${assets.client.js}" defer></script>`
+    : `<script src="${assets.client.js}" defer crossorigin></script>`
+}
     </head>
     <body>
         <div id="root">${markup}</div>
     </body>
-</html>`
+</html>`,
       );
     }
   });
