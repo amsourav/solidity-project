@@ -10,6 +10,7 @@ import Campaign from './components/Campaign';
 import CampaignPage from './components/CampaignPage';
 import Home from './components/Home';
 import NewCampaign from './components/NewCampaign';
+import Verfied from './components/Verified';
 
 const App = () => (
   <Fragment>
@@ -31,6 +32,7 @@ const App = () => (
       <Route exact path="/campaigns" component={Campaign} />
       <Route exact path="/about" component={About} />
       <Route exact path="/campaigns/new" component={NewCampaign} />
+      <Route path="/verified/:publicAddress" component={Verfied} />
       <Route path="/campaigns/:campaignId" component={CampaignPage} />
     </Switch>
   </Fragment>

@@ -21,6 +21,8 @@ import {
   getRequests,
   createRequest,
   memberCount,
+  approveRequest,
+  completeRequest,
 } from '../../apis';
 import './CampaignPage.css';
 
@@ -46,6 +48,8 @@ class CampaignPage extends Component {
     const isMember = await userIsMember(campaignId);
     const campaign = await getCampaignSummary(campaignId);
     const mCount = await memberCount(campaignId);
+
+    console.log(isMember);
     // const users = await getAllVerifiedUsers();
     // console.log('users ==>', users);
     // console.log('campaign ==>', campaign);
@@ -58,6 +62,28 @@ class CampaignPage extends Component {
       requests,
       mCount,
     });
+  }
+
+  handleRequestApproval = async (requestIndex) => {
+    console.log(requestIndex);
+    const {
+      match: {
+        params: { campaignId },
+      },
+    } = this.props;
+
+    await approveRequest(campaignId, requestIndex);
+  };
+
+  handleRequestCompletion = async (requestIndex) => {
+    console.log(requestIndex);
+    const {
+      match: {
+        params: { campaignId },
+      },
+    } = this.props;
+
+    await completeRequest(campaignId, requestIndex);
   }
 
   handleModalOutput = async (value) => {
@@ -262,7 +288,7 @@ class CampaignPage extends Component {
                         justifyContent: 'space-between',
                       }}
                     >
-                      <h4 className="px-2 py-2">Pending Requests</h4>
+                      <h4 className="px-2 py-2">Expense Requests</h4>
                       <Button onClick={this.triggerRequestModal} color="success">
                         New Request
                       </Button>
@@ -273,11 +299,12 @@ class CampaignPage extends Component {
                       />
                     </div>
                     <Container>
-                      {requests.map(request => (
+                      {requests.map((request, requestIndex) => (
                         <RequestCard
                           {...request}
-                          handleCompletion={() => {}}
-                          handleApproval={() => {}}
+                          totalUser={mCount}
+                          handleCompletion={() => this.handleRequestCompletion(requestIndex)}
+                          handleApproval={() => this.handleRequestApproval(requestIndex)}
                         />
                       ))}
                     </Container>

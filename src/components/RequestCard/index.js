@@ -11,6 +11,7 @@ const RequestCard = ({
   approvalCount,
   handleApproval,
   handleCompletion,
+  totalUser,
 }) => (
   <Card className="mb-2">
     <CardBody>
@@ -31,23 +32,41 @@ ETH
           {' '}
 to
           {' '}
-          <code>{recipient}</code>
+          <code>
+            <a href={`/verified/${recipient}`}>{recipient}</a>
+          </code>
         </div>
 
         <div>
           Approvals received:
           {approvalCount}
         </div>
+
+        <div>
+          Approval:
+          {(approvalCount / (totalUser * 1.0)) * 100}
+          {' '}
+%
+        </div>
       </div>
 
       <div className="pt-2">
-        {!complete ? (
-          <Button onClick={handleApproval} size="sm">
-            Approve
+        {complete && (
+          <Button size="sm" disabled>
+            Funds disbursed
           </Button>
-        ) : (
-          <Button color="success" size="sm" onClick={handleCompletion}>Disburse</Button>
         )}
+
+        {!complete
+          && (approvalCount < totalUser / 2 ? (
+            <Button onClick={handleApproval} size="sm">
+              Approve
+            </Button>
+          ) : (
+            <Button color="success" size="sm" onClick={handleCompletion}>
+              Disburse
+            </Button>
+          ))}
       </div>
     </CardBody>
   </Card>

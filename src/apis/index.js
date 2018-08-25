@@ -151,16 +151,12 @@ export const createRequest = async (contractAddress, requestParams) => {
   // description, uint value, address recipient
   const account = await getAccount();
   const { description, value, recipient } = requestParams;
-  console.log(web3.utils.toWei(value, 'ether'));
   const campaign = CampaignContract(contractAddress);
   try {
     const request = campaign.methods
       .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
       .send({
         from: account,
-      })
-      .catch((e) => {
-        console.log(e);
       });
     return request;
   } catch (e) {
@@ -193,4 +189,25 @@ export const getAllVerifiedUsers = async () => {
         };
       }),
   );
+};
+
+export const approveRequest = async (campaignAddress, requestId) => {
+  const account = await getAccount();
+  const campaign = CampaignContract(campaignAddress);
+  // console.log(campaign)
+  return campaign.methods
+    .approveRequest(requestId)
+    .send({
+      from: account,
+    });
+};
+
+export const completeRequest = async (campaignAddress, requestId) => {
+  const account = await getAccount();
+  const campaign = CampaignContract(campaignAddress);
+  return campaign.methods
+    .finalizeRequest(requestId)
+    .send({
+      from: account,
+    });
 };
