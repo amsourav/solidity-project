@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Route from 'react-router-dom/Route';
 import Switch from 'react-router-dom/Switch';
 import {
-  Container, Collapse, Nav, Navbar, NavbarBrand, NavItem, NavLink,
+  Collapse, Nav, Navbar, NavbarBrand, NavItem, NavLink,
 } from 'reactstrap';
 import { init } from '@sentry/browser';
 import Home from './components/Home';
@@ -31,15 +31,13 @@ const App = () => (
         </Nav>
       </Collapse>
     </Navbar>
-    <Container>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/campaigns" component={Campaign} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/campaigns/new" component={NewCampaign} />
-        <Route path="/campaigns/:campaignId" component={CampaignPage} />
-      </Switch>
-    </Container>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/campaigns" component={Campaign} />
+      <Route exact path="/about" component={About} />
+      <Route exact path="/campaigns/new" component={NewCampaign} />
+      <Route path="/campaigns/:campaignId" component={CampaignPage} />
+    </Switch>
   </Fragment>
 );
 

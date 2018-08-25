@@ -4,8 +4,16 @@ import web3 from '../../ethereum/web3';
 
 export const getDeployedContracts = async () => factory.methods.getDeployedCampaigns().call();
 
-export const getCampaignSummary = async address => {
-  console.log(address)
+export const getAccount = async () => {
+  const accounts = await web3.eth.getAccounts();
+  if (!accounts) {
+    throw new Error("Couldn't find any account");
+  }
+  return accounts[0];
+};
+
+export const getCampaignSummary = async (address) => {
+  // console.log(address);
   const campaign = CampaignContract(address);
   const summary = await campaign.methods.getSummary().call();
 
@@ -19,6 +27,17 @@ export const getCampaignSummary = async address => {
   };
 };
 
+export const contributeToCampaign = async (address, value) => {
+  console.log(address, value);
+  const account = await getAccount();
+  const campaign = CampaignContract(address);
+  const contribution = await campaign.methods.contribute().send({
+    from: account,
+    value: web3.utils.toWei(value, 'ether'),
+  });
+  return contribution;
+};
+
 export const getAllContractsSummary = async () => {
   const allData = [];
   const allContractAddress = await getDeployedContracts();
@@ -27,14 +46,6 @@ export const getAllContractsSummary = async () => {
   });
 
   return Promise.all(allData);
-};
-
-export const getAccount = async () => {
-  const accounts = await web3.eth.getAccounts();
-  if (!accounts) {
-    throw new Error("Couldn't find any account");
-  }
-  return accounts[0];
 };
 
 export const createCampaign = async (props) => {

@@ -1,20 +1,21 @@
-import React, { Component } from "react";
-import { Col, Row } from "reactstrap";
-import { getAllContractsSummary } from "../../apis";
-import Card from "../Card";
+import React, { Component } from 'react';
+import { Container, Col, Row } from 'reactstrap';
+import { getAllContractsSummary } from '../../apis';
+import Card from '../Card';
 
 class Campaign extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      campaigns: []
+      campaigns: [],
     };
   }
+
   async componentDidMount() {
     const campaigns = await getAllContractsSummary();
     // console.log(campaigns);
     this.setState({
-      campaigns
+      campaigns,
     });
   }
 
@@ -25,45 +26,47 @@ class Campaign extends Component {
         contractAddress,
         campaignImage,
         campaignSubject,
-        campaignTitle
+        campaignTitle,
         // campaignMinimum, also available
         // campaignOwner, also available
-      }) => {
-        return (
-          <Col key={contractAddress} md={4} sm={6}>
-            <Card
-              campaignImage={campaignImage}
-              campaignTitle={campaignTitle}
-              campaignSubject={campaignSubject}
-              key={contractAddress}
-              contractAddress={contractAddress}
-            />
-          </Col>
-        );
-      }
+      }) => (
+        <Col key={contractAddress} md={4} sm={6}>
+          <Card
+            campaignImage={campaignImage}
+            campaignTitle={campaignTitle}
+            campaignSubject={campaignSubject}
+            key={contractAddress}
+            contractAddress={contractAddress}
+          />
+        </Col>
+      ),
     );
 
-    return campaigns.length > 0 ? (
-      <div className="py-3">
-        <Row>{campaignCards}</Row>
-      </div>
-    ) : (
-      <div className="py-3">
-        <Row>
-          <Col key={1} md={4} sm={6}>
-            <Card isLoading />
-          </Col>
-          <Col key={2} md={4} sm={6}>
-            <Card isLoading />
-          </Col>
-          <Col key={3} md={4} sm={6}>
-            <Card isLoading />
-          </Col>
-          <Col key={4} md={4} sm={6}>
-            <Card isLoading />
-          </Col>
-        </Row>
-      </div>
+    return (
+      <Container>
+        {campaigns.length > 0 ? (
+          <div className="py-3">
+            <Row>{campaignCards}</Row>
+          </div>
+        ) : (
+          <div className="py-3">
+            <Row>
+              <Col key={1} md={4} sm={6}>
+                <Card isLoading />
+              </Col>
+              <Col key={2} md={4} sm={6}>
+                <Card isLoading />
+              </Col>
+              <Col key={3} md={4} sm={6}>
+                <Card isLoading />
+              </Col>
+              <Col key={4} md={4} sm={6}>
+                <Card isLoading />
+              </Col>
+            </Row>
+          </div>
+        )}
+      </Container>
     );
   }
 }

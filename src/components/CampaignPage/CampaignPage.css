@@ -1,0 +1,10 @@
+.campaign-details {
+  display: flex;
+}
+
+.campaign-details .right {
+  color: white;
+  font-size: 16px;
+}
+
+

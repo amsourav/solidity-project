@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Col, Form, FormGroup, Input, Label, Row,
+  Container, Button, Col, Form, FormGroup, Input, Label, Row,
 } from 'reactstrap';
 import Card from '../Card';
 import { createCampaign } from '../../apis';
@@ -97,15 +97,17 @@ class NewCampaign extends Component {
     );
     const { image, title, subject } = this.state;
     return (
-      <div className="pt-2">
-        <div className="py-3">Create new campaign</div>
-        <Row>
-          <Col md={8}>{newCampaignForm}</Col>
-          <Col md={4}>
-            <Card campaignImage={image} campaignTitle={title} campaignSubject={subject} />
-          </Col>
-        </Row>
-      </div>
+      <Container>
+        <div className="pt-2">
+          <div className="py-3">Create new campaign</div>
+          <Row>
+            <Col md={8}>{newCampaignForm}</Col>
+            <Col md={4}>
+              <Card campaignImage={image} campaignTitle={title} campaignSubject={subject} />
+            </Col>
+          </Row>
+        </div>
+      </Container>
     );
   }
 }
