@@ -17,24 +17,48 @@ export const getCampaignSummary = async (address) => {
   const campaign = CampaignContract(address);
   const summary = await campaign.methods.getSummary().call();
 
+  console.log(summary);
+
   return {
     contractAddress: address,
     campaignOwner: summary[0],
     campaignTitle: summary[1],
     campaignSubject: summary[2],
     campaignImage: summary[3],
-    campaignMinimum: parseInt(summary[4], 10),
+    campaignMinimum: web3.utils.fromWei(summary[4], 'ether'),
+    campaignBalance: web3.utils.fromWei(summary[5], 'ether'),
   };
 };
 
 export const contributeToCampaign = async (address, value) => {
-  console.log(address, value);
+  // console.log(address, value);
   const account = await getAccount();
   const campaign = CampaignContract(address);
-  const contribution = await campaign.methods.contribute().send({
-    from: account,
-    value: web3.utils.toWei(value, 'ether'),
-  });
+  const contribution = await campaign.methods
+    .contribute()
+    .send({
+      from: account,
+      value: web3.utils.toWei(value, 'ether'),
+    })
+    .on('error', (error) => {
+      console.log(error);
+    })
+    .on('transactionHash', (transactionHash) => {
+      console.log('1', transactionHash);
+    })
+    .on('receipt', (receipt) => {
+      console.log('2', receipt); // contains the new contract address
+    })
+    .on('confirmation', (confirmationNumber, receipt) => {
+      console.log('3', confirmationNumber, receipt);
+    })
+    .then((newContractInstance) => {
+      console.log('4', newContractInstance);
+      console.log('contract address ==>', newContractInstance.to); // instance with the new contract address
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   return contribution;
 };
 
@@ -48,13 +72,21 @@ export const getAllContractsSummary = async () => {
   return Promise.all(allData);
 };
 
+export const userIsMember = async (address) => {
+  const account = await getAccount();
+  const campaign = CampaignContract(address);
+  const isMember = await campaign.methods.approvers(account).call();
+
+  return isMember;
+};
+
 export const createCampaign = async (props) => {
   const account = await getAccount();
   const campaignParams = {
     campaignName: props.title,
     campaignSubject: props.subject,
     campaignURL: props.image,
-    minimum: parseInt(props.minContribution, 10),
+    minimum: web3.utils.toWei(props.minContribution, 'ether'),
   };
   // string campaignName, string campaignSubject, string campaignURL, uint minimum
   //   console.log("campaign params ==>", campaignParams);
@@ -87,4 +119,50 @@ export const createCampaign = async (props) => {
     .catch((e) => {
       console.log(e);
     });
+};
+
+export const getPendingRequestCount = async (contractAddress) => {
+  const campaign = CampaignContract(contractAddress);
+  return campaign.methods.getRequestsCount().call();
+};
+
+export const getRequests = async (contractAddress, requestCount) => {
+  const campaign = CampaignContract(contractAddress);
+  return Promise.all(
+    Array(parseInt(requestCount, 10))
+      .fill()
+      .map((element, index) => campaign.methods.requests(index).call())
+      .map(async (r) => {
+        const request = await r;
+        console.log(request);
+        return {
+          approvalCount: request.approvalCount,
+          complete: request.complete,
+          description: request.description,
+          recipient: request.recipient,
+          value: web3.utils.fromWei(request.value, 'ether'),
+        };
+      }),
+  );
+};
+
+export const createRequest = async (contractAddress, requestParams) => {
+  // description, uint value, address recipient
+  const account = await getAccount();
+  const { description, value, recipient } = requestParams;
+  console.log(web3.utils.toWei(value, 'ether'));
+  const campaign = CampaignContract(contractAddress);
+  try {
+    const request = campaign.methods
+      .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
+      .send({
+        from: account,
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    return request;
+  } catch (e) {
+    console.log(e);
+  }
 };

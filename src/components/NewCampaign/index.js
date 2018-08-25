@@ -81,13 +81,12 @@ class NewCampaign extends Component {
         </FormGroup>
         <FormGroup row>
           <Label sm={2} for="minContribution">
-            Minimum contribution
+            Minimum contribution (ETH)
           </Label>
           <Col sm={10}>
             <Input
               name="minContribution"
               onChange={this.handleChange}
-              type="number"
               id="minContribution"
             />
           </Col>
@@ -99,7 +98,7 @@ class NewCampaign extends Component {
     return (
       <Container>
         <div className="pt-2">
-          <div className="py-3">Create new campaign</div>
+          <h2 className="py-3">Create new campaign</h2>
           <Row>
             <Col md={8}>{newCampaignForm}</Col>
             <Col md={4}>
