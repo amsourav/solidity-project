@@ -1,29 +1,54 @@
-import React, { Component } from "react";
-import {getCampaignSummary} from '../../apis'
+import React, { Component, Fragment } from 'react';
+import { getCampaignSummary } from '../../apis';
 
 class CampaignPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      campaign: null
+      campaign: null,
     };
   }
 
   async componentDidMount() {
-    const { campaignId } = this.props.match.params;
+    const {
+      match: { params: campaignId },
+    } = this.props;
     const summary = await getCampaignSummary(campaignId);
     this.setState(
       {
-        campaign: summary
+        campaign: summary,
       },
       () => {
-        console.log("got campaigns");
-      }
+        const { campaign } = this.state;
+        console.log('got campaigns ==>', campaign);
+      },
     );
   }
 
   render() {
-    return <div className="CampaignPage">I am CampaignPage page</div>;
+    const { campaign } = this.state;
+
+    return campaign ? (
+      <Fragment>
+        <img
+          className="campaign-image"
+          style={{
+            width: 100,
+          }}
+          src={campaign.campaignImage}
+          alt={campaign.capaignSubject}
+        />
+        <div>{campaign.campaignTitle}</div>
+        <div>{campaign.campaignSubject}</div>
+        <div>{campaign.contractAddress}</div>
+        <div>
+          Min contribution
+          {campaign.campaignMinimum}
+        </div>
+      </Fragment>
+    ) : (
+      <div>making api call</div>
+    );
   }
 }
 

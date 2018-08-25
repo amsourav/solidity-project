@@ -9,7 +9,7 @@ import {
   Navbar,
   NavbarBrand,
   NavItem,
-  NavLink
+  NavLink,
 } from 'reactstrap';
 import Home from './components/Home';
 import Campaign from './components/Campaign';
@@ -20,14 +20,14 @@ import NewCampaign from './components/NewCampaign';
 const App = () => (
   <Fragment>
     <Navbar color="dark" dark expand="md">
-      <NavbarBrand href="/">GoFundMe</NavbarBrand>
+      <NavbarBrand href="/">ETHCollective</NavbarBrand>
       <Collapse navbar>
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink href="/campaigns">Campaigns</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink href="/about">About</NavLink>
+            <NavLink href="/campaigns/new">New Campaign</NavLink>
           </NavItem>
         </Nav>
       </Collapse>

@@ -11,6 +11,32 @@ contract CampaignFactory {
     function getDeployedCampaigns() public view returns (address[]) {
         return deployedCampaigns;
     }
+    
+    function find(address value) returns(uint) {
+        uint i = 0;
+        while (deployedCampaigns[i] != value) {
+            i++;
+        }
+        return i;
+    }
+
+    function removeByValue(address value) {
+        uint i = find(value);
+        removeByIndex(i);
+    }
+
+    function removeByIndex(uint i) {
+        while (i<deployedCampaigns.length-1) {
+            deployedCampaigns[i] = deployedCampaigns[i+1];
+            i++;
+        }
+        deployedCampaigns.length--;
+    }
+    
+    
+    function removeDeployedCampaigns(address campaignAddress) public {
+        removeByValue(campaignAddress);
+    }
 }
 
 contract Campaign {
