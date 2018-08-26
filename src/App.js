@@ -28,7 +28,7 @@ const App = () => (
       </Collapse>
     </Navbar>
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={Campaign} />
       <Route exact path="/campaigns" component={Campaign} />
       <Route exact path="/about" component={About} />
       <Route exact path="/campaigns/new" component={NewCampaign} />

@@ -84,7 +84,7 @@ class CampaignPage extends Component {
     } = this.props;
 
     await completeRequest(campaignId, requestIndex);
-  }
+  };
 
   handleModalOutput = async (value) => {
     const {
@@ -194,6 +194,8 @@ class CampaignPage extends Component {
                       className="campaign-image"
                       style={{
                         width: '200px',
+                        height: '200px',
+                        objectFit: 'cover',
                       }}
                       src={campaign.campaignImage}
                       alt={campaign.capaignSubject}
