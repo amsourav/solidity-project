@@ -23,6 +23,7 @@ import {
   memberCount,
   approveRequest,
   completeRequest,
+  getAccount,
 } from '../../apis';
 import './CampaignPage.css';
 
@@ -36,6 +37,7 @@ class CampaignPage extends Component {
       isMember: false,
       isContributeStart: false,
       mCount: 0,
+      current_account: null,
     };
   }
 
@@ -45,6 +47,7 @@ class CampaignPage extends Component {
         params: { campaignId },
       },
     } = this.props;
+    const current_account = await getAccount();
     const isMember = await userIsMember(campaignId);
     const campaign = await getCampaignSummary(campaignId);
     const mCount = await memberCount(campaignId);
@@ -61,6 +64,7 @@ class CampaignPage extends Component {
       isMember,
       requests,
       mCount,
+      current_account,
     });
   }
 
@@ -146,6 +150,7 @@ class CampaignPage extends Component {
       requests,
       isRequestOpen,
       mCount,
+      current_account,
     } = this.state;
     return campaign ? (
       <Fragment>
@@ -224,7 +229,19 @@ class CampaignPage extends Component {
                       }}
                       className="contractAddress"
                     >
+                      Contract
+                      {' '}
                       {campaign.contractAddress}
+                    </h4>
+                    <h4
+                      style={{
+                        textTransform: 'capitalize',
+                      }}
+                      className="contractAddress"
+                    >
+                      Owner
+                      {' '}
+                      {campaign.campaignOwner}
                     </h4>
                     <div className="contribution">
                       {'Min contribution: '}
@@ -291,9 +308,11 @@ class CampaignPage extends Component {
                       }}
                     >
                       <h4 className="px-2 py-2">Expense Requests</h4>
-                      <Button onClick={this.triggerRequestModal} color="success">
-                        New Request
-                      </Button>
+                      {current_account === campaign.campaignOwner && (
+                        <Button onClick={this.triggerRequestModal} color="success">
+                          New Request
+                        </Button>
+                      )}
 
                       <RequestModal
                         isOpen={isRequestOpen}
@@ -305,6 +324,7 @@ class CampaignPage extends Component {
                         <RequestCard
                           {...request}
                           totalUser={mCount}
+                          enableDisburse={current_account === campaign.campaignOwner}
                           handleCompletion={() => this.handleRequestCompletion(requestIndex)}
                           handleApproval={() => this.handleRequestApproval(requestIndex)}
                         />
